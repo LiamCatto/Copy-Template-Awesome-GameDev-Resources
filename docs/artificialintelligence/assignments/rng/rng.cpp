@@ -3,7 +3,7 @@
 #include <iostream>
 #include <istream>
 const std::string TEST_FOLDER = "\\tests\\";
-unsigned int xorShift(unsigned int seed, int r1, int r2);
+unsigned int LehmerRNG(unsigned int seed, int r1, int r2);
 int main(){
   // code here
   unsigned int seed, N, min, max;
@@ -12,17 +12,14 @@ int main(){
   for(i = N; i >= 1; i--)
   {
     //Run xor shift
-    seed = xorShift(seed, min, max);
+    seed = LehmerRNG(seed, min, max);
   }
 }
 //The purpose of this function is to take the number and xor shift it to output a pseudo-random number
-    unsigned int xorShift(unsigned int seed, int r1, int r2)
+    unsigned int LehmerRNG(unsigned int seed, int r1, int r2)
 {
-  seed = seed xor (seed << 13);
-  seed = seed xor (seed >> 17);
-  seed = seed xor (seed << 5);
-  int value = r1 + (seed % (r2 - r1 + 1)); //clamps the value to between r1 and r2
-          //output the new values
-          std::cout << value << std::endl;
+  seed = 48271 * (seed % 0x7fffffff); // Produce a pseudo-random number
+  seed = (seed % r2) + r1;            // Clamp the number between r1 and r2
+  std::cout << seed << std::endl;     // Print the result to the console
   return seed;
 }
